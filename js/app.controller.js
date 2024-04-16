@@ -69,7 +69,7 @@ function renderLocs(locs) {
 }
 
 function onRemoveLoc(locId) {
-    
+
     locService.remove(locId)
         .then(() => {
             flashMsg('Location removed')
