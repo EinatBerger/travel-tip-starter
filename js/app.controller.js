@@ -18,6 +18,8 @@ window.app = {
     onSetFilterBy,
 }
 
+var gUserPos
+
 function onInit() {
     loadAndRenderLocs()
 
@@ -41,6 +43,7 @@ function renderLocs(locs) {
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
                 <span>${loc.name}</span>
+                <span class="distance muted">${displayDistance(loc)}</span>
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             <p class="muted">
@@ -55,6 +58,7 @@ function renderLocs(locs) {
                <button title="Select" onclick="app.onSelectLoc('${loc.id}')">🗺️</button>
             </div>     
         </li>`}).join('')
+
 
     const elLocList = document.querySelector('.loc-list')
     elLocList.innerHTML = strHTML || 'No locs to show'
@@ -129,6 +133,8 @@ function onPanToUserPos() {
     mapService.getUserPosition()
         .then(latLng => {
             mapService.panTo({ ...latLng, zoom: 15 })
+            gUserPos = { lat: latLng.lat, lng: latLng.lng }
+
             unDisplayLoc()
             loadAndRenderLocs()
             flashMsg(`You are at Latitude: ${latLng.lat} Longitude: ${latLng.lng}`)
@@ -168,6 +174,14 @@ function onSelectLoc(locId) {
         })
 }
 
+function displayDistance(loc) {
+    if (!gUserPos) return ''
+
+    const locPos = { lat: loc.geo.lat, lng: loc.geo.lng }
+    const distance = utilService.getDistance(gUserPos, locPos, 'K')
+    return `Distance: ${distance}KM`
+}
+
 function displayLoc(loc) {
     document.querySelector('.loc.active')?.classList?.remove('active')
     document.querySelector(`.loc[data-id="${loc.id}"]`).classList.add('active')
@@ -178,6 +192,7 @@ function displayLoc(loc) {
     const el = document.querySelector('.selected-loc')
     el.querySelector('.loc-name').innerText = loc.name
     el.querySelector('.loc-address').innerText = loc.geo.address
+    el.querySelector('.loc-distance').innerText = displayDistance(loc)
     el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
     el.querySelector('[name=loc-copier]').value = window.location
     el.classList.add('show')
