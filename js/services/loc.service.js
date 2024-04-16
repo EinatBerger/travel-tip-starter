@@ -30,7 +30,8 @@ export const locService = {
     save,
     setFilterBy,
     setSortBy,
-    getLocCountByRateMap
+    getLocCountByRateMap,
+    getLocCountByLastUpdatedMap
 }
 
 function query() {
@@ -99,6 +100,25 @@ function getLocCountByRateMap() {
             return locCountByRateMap
         })
 }
+
+function getLocCountByLastUpdatedMap() {
+    return storageService.query(DB_KEY)
+        .then(locs => {
+            const locCountByLastUpdateMap = locs.reduce((map, loc) => {
+                console.log('utilService.elapsedTime(loc.updatedAt):', utilService.elapsedTime(loc.updatedAt))
+                const lastUpdateStr=utilService.elapsedTime(loc.updatedAt)
+                if (lastUpdateStr.includes('just now') 
+                || lastUpdateStr.includes('last hour') 
+                || lastUpdateStr.includes('today')) map.today++
+                else if (lastUpdateStr.includes('days ago')) map.past++
+                else map.never++
+                return map
+            }, { today: 0, past: 0, never: 0 })
+            locCountByLastUpdateMap.total = locs.length
+            return locCountByLastUpdateMap
+        })
+}
+
 
 function setSortBy(sortBy = {}) {
     gSortBy = sortBy
