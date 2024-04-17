@@ -72,6 +72,13 @@
                 </section>
             </section>
         </div>
+        <dialog class="modal">
+            <h4 class="title"></h4>
+            <p class="address smaller"></p>
+            <input type="text" class="loc-name" placeholder="Location name">
+            <input type="number" min="1" max="5" class="loc-rate" placeholder="Rate">
+            <button onclick="app.onSaveLoc(this)" data-loc-id="">Save</button>
+        </dialog>
     </main>
     <pre class="debug" hidden></pre>
     <div class="user-msg"></div>

@@ -1,0 +1,12 @@
+::backdrop {
+    background-color: gray;
+    opacity: 0.5;
+}
+
+.modal .loc-name {
+    width: 200px;
+}
+
+.modal .loc-rate {
+    width: 50px;
+}

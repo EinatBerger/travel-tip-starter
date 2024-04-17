@@ -79,7 +79,8 @@ window.app = {
     onCopyLoc,
     onShareLoc,
     onSetSortBy,
-    onSetFilterBy
+    onSetFilterBy,
+    onSaveLoc
 }
 ```
 
