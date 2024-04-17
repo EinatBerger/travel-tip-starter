@@ -106,10 +106,10 @@ function getLocCountByLastUpdatedMap() {
         .then(locs => {
             const locCountByLastUpdateMap = locs.reduce((map, loc) => {
                 console.log('utilService.elapsedTime(loc.updatedAt):', utilService.elapsedTime(loc.updatedAt))
-                const lastUpdateStr=utilService.elapsedTime(loc.updatedAt)
-                if (lastUpdateStr.includes('just now') 
-                || lastUpdateStr.includes('last hour') 
-                || lastUpdateStr.includes('today')) map.today++
+                const lastUpdateStr = utilService.elapsedTime(loc.updatedAt)
+                if (lastUpdateStr.includes('just now')
+                    || lastUpdateStr.includes('last hour')
+                    || lastUpdateStr.includes('today')) map.today++
                 else if (lastUpdateStr.includes('days ago')) map.past++
                 else map.never++
                 return map
